@@ -23,7 +23,7 @@ RUN apt update && apt install -y \
     && apt autoremove \
     && pip install -r requirements.txt 
 
-COPY ./backend/ .
+COPY ./vimeo/ .
 COPY docker-entrypoint.sh .
 
 # Finish config & clean
