@@ -1,0 +1,7 @@
+# Python project requirements
+requests
+psycopg2-binary
+django
+django-cors-headers
+djangorestframework
+django_redis
