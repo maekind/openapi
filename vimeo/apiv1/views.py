@@ -33,7 +33,7 @@ class VideoDetailAPIView(generics.RetrieveAPIView):
                         # Create object in to the database before returning object
                         self._create_object(json_data)
                         print(
-                            f"New object creationg has took {(time.time() - start_time):.2f} seconds")
+                            f"New object creation in {(time.time() - start_time):.2f} seconds")
 
             except Exception as ex:
                 print(f"{ex}: Invalid id!")
