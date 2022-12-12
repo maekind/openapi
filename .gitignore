@@ -1,6 +1,7 @@
 # Project files / folders to ignore
 samples
 tree.md
+db
 
 # macOS finder temporary files
 .DS_Store
