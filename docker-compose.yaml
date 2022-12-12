@@ -29,7 +29,7 @@ services:
     build: .
     hostname: backend
     ports:
-      - "8012:8012"
+      - "8012:8000"
     environment:
       - POSTGRES_NAME=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
