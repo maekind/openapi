@@ -19,9 +19,9 @@ services:
       - ./db:/var/lib/postgresql/data
     restart: unless-stopped
     environment:
-      - POSTGRES_DB=openapi
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin123
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
 
@@ -31,11 +31,11 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - POSTGRES_NAME=openapi
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin123
-      - POSTGRES_HOST=db
-      - POSTGRES_PORT=5432
+      - POSTGRES_NAME=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
     restart: always
     depends_on:
       - db
