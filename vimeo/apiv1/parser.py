@@ -1,6 +1,6 @@
 """ Contains classes and methods for retreiving video information """
-import requests
 import json
+import requests
 
 class NotValidResponseException(BaseException):
     """ NotValidResponseException custom exception """
@@ -28,9 +28,13 @@ class Parser():
         self._base_url = f'{self.VIMEO_URL}{video_id}'
 
     def fetch_data(self):
-        """ Method to fetch video info
-
-            Exception: NotValidResponseException is raised is status code is different than 200.
+        """ Method to fetch video info.
+            The method assumes that a valid video id has been initialized.
+            ---
+            Exception: NotValidResponseException is raised if status code is different than 200
+            or response content is not a valid json data.
+            ---
+            Return: json data object.
         """
         request = requests.get(self._base_url)
 
