@@ -2,6 +2,7 @@
 import json
 import requests
 
+
 class NotValidResponseException(BaseException):
     """ NotValidResponseException custom exception """
 
@@ -9,6 +10,7 @@ class NotValidResponseException(BaseException):
 class Parser():
     """ Class that gets the video information from vimeo baes url """
     VIMEO_URL = r"https://vimeo.com/"
+    TIMEOUT = 5  # seconds
     # BEGIN_TITLE_KEY = '<meta property="og:title" content="'
     # END_TITLE_KEY = '">'
     # BEGIN_IMAGE_KEY = '<meta property="og:image" content="'
@@ -36,21 +38,23 @@ class Parser():
             ---
             Return: json data object.
         """
-        request = requests.get(self._base_url)
+        try:
+            response = requests.get(self._base_url, timeout=self.TIMEOUT)
 
-        if request.status_code == 200:
+            response.raise_for_status()
+
             print(
                 f"Video id {self._video_id} information fetched successfully!")
-            
-            try:
-                # Try to find json url
-                json_url = self._get_json_url(str(request.content))
-                # Pase json data and retrieve video information
-                return self._parse_json_url(json_url)
-            except Exception as ex:
-                raise ex
-        else:
-            raise NotValidResponseException(request.status_code)
+
+            # Try to find json url
+            json_url = self._get_json_url(str(response.content))
+            # Pase json data and retrieve video information
+            return self._parse_json_url(json_url)
+
+        except requests.exceptions.Timeout as error:
+            raise NotValidResponseException('Timeout') from error
+        except Exception as ex:
+            raise ex
 
     def _get_json_url(self, webpage_data: str) -> str:
         """ Method for getting the video's json url
@@ -64,8 +68,8 @@ class Parser():
             # print(json_url)
             return json_url.replace('\\', '')
 
-        except:
-            raise NotValidResponseException("Unable to get the json url!")
+        except Exception as error:
+            raise NotValidResponseException("Unable to get the json url!") from error
 
     def _parse_json_url(self, url: str) -> str:
         """ Method for retreiving video's json data 
@@ -73,9 +77,8 @@ class Parser():
 
             Exception: NotValidResponseException is raised is status code is different than 200.
         """
-        request = requests.get(url)
+        response = requests.get(url, timeout=self.TIMEOUT)
 
-        if request.status_code == 200:
-            return json.loads(request.content)
-        else:
-            raise NotValidResponseException(request.status_code)
+        response.raise_for_status()
+
+        return json.loads(response.content)
